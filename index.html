@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="bg">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Prolog животни с различни правила и GIF</title>
+  <title>Prolog автомобили с различни правила и GIF</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -49,7 +49,7 @@
       font-weight: bold;
       color: #004a99;
     }
-    .animal-container {
+    .car-container {
       margin-top: 30px;
       min-height: 160px;
       display: flex;
@@ -59,7 +59,7 @@
       border-radius: 12px;
       box-shadow: 0 0 10px #a0c4ff;
     }
-    .animal-gif {
+    .car-gif {
       max-width: 180px;
       border-radius: 12px;
       box-shadow: 0 0 10px #005f99;
@@ -67,81 +67,84 @@
   </style>
 </head>
 <body>
-  <h1>Задание: Програма с Prolog за животни и GIF визуализация</h1>
+  <h1>Задание: Програма с Prolog за автомобили и GIF визуализация</h1>
 
   <textarea id="prolog-input">
 % Примери на заявки:
-is_mammal(X).
-is_big(X).
-is_predator(X).
-can_fly(X).
-is_herbivore(X).
+is_suv(X).
+is_electric(X).
+is_powerful(X).
+is_luxury(X).
+can_offroad(X).
   </textarea><br />
   <button onclick="runProlog()">Изпълни</button>
 
   <div id="result"></div>
-  <div class="animal-container" id="animal-animation"></div>
+  <div class="car-container" id="car-animation"></div>
 
   <script src="https://unpkg.com/tau-prolog"></script>
   <script>
     const session = pl.create();
 
     const knowledge = `
-% Животни
-animal(lion).
-animal(elephant).
-animal(tiger).
-animal(crocodile).
-animal(kangaroo).
-animal(owl).
+% Автомобили
+car(tesla_model_x).
+car(ford_f150).
+car(bmw_x5).
+car(toyota_landcruiser).
+car(audi_a4).
+car(rivian_r1t).
 
-% Бозайници
-mammal(lion).
-mammal(elephant).
-mammal(tiger).
-mammal(kangaroo).
+% SUV-та
+suv(tesla_model_x).
+suv(ford_f150).
+suv(bmw_x5).
+suv(toyota_landcruiser).
+suv(rivian_r1t).
 
-% Големи животни
-big(elephant).
-big(lion).
-big(crocodile).
+% Електрически
+electric(tesla_model_x).
+electric(rivian_r1t).
 
-% Хищници
-predator(lion).
-predator(tiger).
-predator(crocodile).
-predator(owl).
+% Мощни
+powerful(ford_f150).
+powerful(toyota_landcruiser).
+powerful(bmw_x5).
+powerful(rivian_r1t).
 
-% Летящи
-can_flyy(owl).
+% Луксозни
+luxury(tesla_model_x).
+luxury(bmw_x5).
+luxury(audi_a4).
 
-% Тревопасни
-herbivore(elephant).
-herbivore(kangaroo).
+% Могат да карат офроуд
+offroad(ford_f150).
+offroad(toyota_landcruiser).
+offroad(rivian_r1t).
 
 % Правила
-is_mammal(X) :- mammal(X).
-is_big(X) :- big(X).
-is_predator(X) :- predator(X).
-can_fly(X) :- can_flyy(X).
-is_herbivore(X) :- herbivore(X).
+is_suv(X) :- suv(X).
+is_electric(X) :- electric(X).
+is_powerful(X) :- powerful(X).
+is_luxury(X) :- luxury(X).
+can_offroad(X) :- offroad(X).
 `;
 
     session.consult(knowledge);
 
-    const animalAnimations = {
-      lion: '<img src="https://images.ecency.com/p/FUkUE5bzkAZT3HzV5tJDiU2ik81PCd4JCyhWnRcDN8XJsVFY3UNB8DCcF6FBnrG9mHUsoB7296D4omrF75j3S9mNdXjzd7j2xiKroEuvcf5umt9qDsRKoeDp3kBezDQscLbJuZaCqh8sgthRd5GukLgMiH16xWrcxhxh.png?format=match&mode=fit" class="animal-gif" alt="Лъв анимация" />',
-      elephant: '<img src="https://media.giphy.com/media/2v170e71aanfi/giphy.gif" class="animal-gif" alt="Слон анимация" />',
-      tiger: '<img src="https://media.giphy.com/media/fANhQpcPGr2hO/giphy.gif" class="animal-gif" alt="Тигър анимация" />',
-      crocodile: '<img src="https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif" class="animal-gif" alt="Крокодил анимация" />',
-      kangaroo: '<img src="https://media.giphy.com/media/l0MYEw7nYdf6r62aI/giphy.gif" class="animal-gif" alt="Кенгуру анимация" />',
-      owl: '<img src="https://media.giphy.com/media/3ohs4B9Zz54HXGvoYs/giphy.gif" class="animal-gif" alt="Бухал анимация" />'
+    const carAnimations = {
+      tesla_model_x: '<img src="https://media.giphy.com/media/9J7tdYltWyXIY/giphy.gif" class="car-gif" alt="Tesla Model X" />',
+      ford_f150: '<img src="https://media.giphy.com/media/J1oK3E1z4p2wo/giphy.gif" class="car-gif" alt="Ford F-150" />',
+      bmw_x5: '<img src="https://media.giphy.com/media/xTiTnjv1cywX7gYRTO/giphy.gif" class="car-gif" alt="BMW X5" />',
+      toyota_landcruiser: '<img src="https://media.giphy.com/media/FNqNlVY2HfX1q/giphy.gif" class="car-gif" alt="Toyota Land Cruiser" />',
+      audi_a4: '<img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" class="car-gif" alt="Audi A4" />',
+      rivian_r1t: '<img src="https://media.giphy.com/media/k90AmlR7zXWcU/giphy.gif" class="car-gif" alt="Rivian R1T" />'
     };
 
     function runProlog() {
       const input = document.getElementById("prolog-input").value;
       const resultDiv = document.getElementById("result");
-      const animDiv = document.getElementById("animal-animation");
+      const animDiv = document.getElementById("car-animation");
 
       resultDiv.innerHTML = "";
       animDiv.innerHTML = "";
@@ -161,16 +164,15 @@ is_herbivore(X) :- herbivore(X).
 
         const match = str.match(/X = (\w+)/);
         if (match) {
-          const animal = match[1];
-          if (animalAnimations[animal]) {
-            animDiv.innerHTML = animalAnimations[animal];
+          const car = match[1];
+          if (carAnimations[car]) {
+            animDiv.innerHTML = carAnimations[car];
           } else {
-            animDiv.innerHTML = "<p>Няма GIF за това животно.</p>";
+            animDiv.innerHTML = "<p>Няма GIF за този автомобил.</p>";
           }
         }
       });
     }
   </script>
-<img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTNqbzV0a21tOTJ2eHh0bmNzeWs4ZnNmb2xhZGV2NWYxeWl2eDA2MSZlcD12MV9naWZzX3RyZW5kaW5nJmN0PWc/dRvEZLV0ORAmHT1L5u/giphy.webp" class="animal-gif" alt="Elephant" />
 </body>
 </html>
