@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prolog животни с различни правила и GIF</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 700px;
+      margin: 30px auto;
+      background: #f9f9f9;
+      color: #333;
+      padding: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      text-align: center;
+    }
+    textarea {
+      width: 90%;
+      max-width: 600px;
+      height: 140px;
+      font-family: monospace;
+      font-size: 16px;
+      margin-top: 10px;
+      border-radius: 6px;
+      border: 2px solid #007acc;
+      padding: 8px;
+      resize: vertical;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 25px;
+      font-size: 18px;
+      background-color: #007acc;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #005f99;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      min-height: 30px;
+      font-weight: bold;
+      color: #004a99;
+    }
+    .animal-container {
+      margin-top: 30px;
+      min-height: 160px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #d0e8ff;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #a0c4ff;
+    }
+    .animal-gif {
+      max-width: 180px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #005f99;
+    }
+  </style>
+</head>
+<body>
+  <h1>Задание: Програма с Prolog за животни и GIF визуализация</h1>
+
+  <textarea id="prolog-input">
+% Примери на заявки:
+is_mammal(X).
+is_big(X).
+is_predator(X).
+can_fly(X).
+is_herbivore(X).
+  </textarea><br />
+  <button onclick="runProlog()">Изпълни</button>
+
+  <div id="result"></div>
+  <div class="animal-container" id="animal-animation"></div>
+
+  <script src="https://unpkg.com/tau-prolog"></script>
+  <script>
+    const session = pl.create();
+
+    const knowledge = `
+% Животни
+animal(lion).
+animal(elephant).
+animal(tiger).
+animal(crocodile).
+animal(kangaroo).
+animal(owl).
+
+% Бозайници
+mammal(lion).
+mammal(elephant).
+mammal(tiger).
+mammal(kangaroo).
+
+% Големи животни
+big(elephant).
+big(lion).
+big(crocodile).
+
+% Хищници
+predator(lion).
+predator(tiger).
+predator(crocodile).
+predator(owl).
+
+% Летящи
+can_flyy(owl).
+
+% Тревопасни
+herbivore(elephant).
+herbivore(kangaroo).
+
+% Правила
+is_mammal(X) :- mammal(X).
+is_big(X) :- big(X).
+is_predator(X) :- predator(X).
+can_fly(X) :- can_flyy(X).
+is_herbivore(X) :- herbivore(X).
+`;
+
+    session.consult(knowledge);
+
+    const animalAnimations = {
+      lion: '<img src="https://images.ecency.com/p/FUkUE5bzkAZT3HzV5tJDiU2ik81PCd4JCyhWnRcDN8XJsVFY3UNB8DCcF6FBnrG9mHUsoB7296D4omrF75j3S9mNdXjzd7j2xiKroEuvcf5umt9qDsRKoeDp3kBezDQscLbJuZaCqh8sgthRd5GukLgMiH16xWrcxhxh.png?format=match&mode=fit" class="animal-gif" alt="Лъв анимация" />',
+      elephant: '<img src="https://media.giphy.com/media/2v170e71aanfi/giphy.gif" class="animal-gif" alt="Слон анимация" />',
+      tiger: '<img src="https://media.giphy.com/media/fANhQpcPGr2hO/giphy.gif" class="animal-gif" alt="Тигър анимация" />',
+      crocodile: '<img src="https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif" class="animal-gif" alt="Крокодил анимация" />',
+      kangaroo: '<img src="https://media.giphy.com/media/l0MYEw7nYdf6r62aI/giphy.gif" class="animal-gif" alt="Кенгуру анимация" />',
+      owl: '<img src="https://media.giphy.com/media/3ohs4B9Zz54HXGvoYs/giphy.gif" class="animal-gif" alt="Бухал анимация" />'
+    };
+
+    function runProlog() {
+      const input = document.getElementById("prolog-input").value;
+      const resultDiv = document.getElementById("result");
+      const animDiv = document.getElementById("animal-animation");
+
+      resultDiv.innerHTML = "";
+      animDiv.innerHTML = "";
+
+      session.query(input);
+      session.answers(answer => {
+        if(answer === false) {
+          resultDiv.innerHTML += `<p>Няма повече резултати.</p>`;
+          return;
+        }
+        const str = pl.format_answer(answer);
+        if (str === "false.") {
+          resultDiv.innerHTML = "<p>Няма резултати за тази заявка.</p>";
+          return;
+        }
+        resultDiv.innerHTML += `<p>${str}</p>`;
+
+        const match = str.match(/X = (\w+)/);
+        if (match) {
+          const animal = match[1];
+          if (animalAnimations[animal]) {
+            animDiv.innerHTML = animalAnimations[animal];
+          } else {
+            animDiv.innerHTML = "<p>Няма GIF за това животно.</p>";
+          }
+        }
+      });
+    }
+  </script>
+<img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTNqbzV0a21tOTJ2eHh0bmNzeWs4ZnNmb2xhZGV2NWYxeWl2eDA2MSZlcD12MV9naWZzX3RyZW5kaW5nJmN0PWc/dRvEZLV0ORAmHT1L5u/giphy.webp" class="animal-gif" alt="Elephant" />
+</body>
+</html>
